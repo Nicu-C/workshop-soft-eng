@@ -96,3 +96,16 @@ def test_multiple_items_update():
     # Sulfuras
     assert items[3].quality == 80
     assert items[3].sell_in == 0
+    # Edge cases to reach 100% coverage
+def test_backstage_pass_after_concert_expired():
+    item = Item("Backstage passes to a TAFKAL80ETC concert", -1, 20)
+    gr = GildedRose([item])
+    gr.update_quality()
+    assert item.quality == 0  # triggers sell_in < 0 branch
+
+def test_aged_brie_quality_max_edge():
+    item = Item("Aged Brie", 2, 50)
+    gr = GildedRose([item])
+    gr.update_quality()
+    assert item.quality == 50  # triggers max-quality cap
+
